@@ -8,6 +8,14 @@ interface BriefFormProps {
 const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
+  /**
+   * ملاحظة هامة لمصعب:
+   * رابط Formspree يجب أن يحتوي على معرف (ID) وليس إيميل مباشرة.
+   * مثال: https://formspree.io/f/mqakjzoy
+   * إذا وضعت الإيميل مباشرة، قد ترفض الخدمة الإرسال.
+   */
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mqakjzoy"; // استبدل mqakjzoy بالـ ID الخاص بك من موقع formspree.io
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -15,7 +23,8 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
     const formData = new FormData(e.currentTarget);
     
     try {
-      const response = await fetch("https://formspree.io/f/m774427746@gmail.com", {
+      // التأكد من أننا نرسل الطلب بشكل صحيح
+      const response = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         body: formData,
         headers: {
@@ -26,11 +35,13 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
       if (response.ok) {
         onSuccess();
       } else {
-        alert("عذراً، حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.");
+        const errorData = await response.json();
+        console.error("Formspree error:", errorData);
+        alert("تنبيه: يرجى التأكد من تفعيل الرابط الخاص بك في Formspree. (تأكد من استخدام الـ ID وليس الإيميل في الكود)");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      alert("تعذر الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت.");
+      alert("حدث خطأ أثناء الاتصال بالخادم. يرجى المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -108,7 +119,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} className="p-6 md:p-12 space-y-12 bg-white">
-      {/* أولاً: معلومات العلامة */}
       <section>
         <SectionHeader num="١" title="معلومات العلامة التجارية" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -123,21 +133,15 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* ثانياً: أهداف التصاميم */}
       <section>
         <SectionHeader num="٢" title="أهداف التصاميم" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>} />
         <div className="space-y-6">
-          <CheckboxGroup 
-            label="ما الهدف الرئيسي من التصاميم؟" 
-            name="الهدف_الرئيسي" 
-            options={["زيادة المبيعات", "زيادة الوعي بالعلامة", "إطلاق منتج / خدمة", "زيادة التفاعل"]} 
-          />
+          <CheckboxGroup label="ما الهدف الرئيسي من التصاميم؟" name="الهدف_الرئيسي" options={["زيادة المبيعات", "زيادة الوعي بالعلامة", "إطلاق منتج / خدمة", "زيادة التفاعل"]} />
           <InputField label="هل يوجد هدف ثانوي؟" name="هدف_ثانوي" placeholder="أي أهداف إضافية تود تحقيقها؟" />
           <InputField label="كيف سيتم قياس نجاح التصاميم؟" name="قياس_النجاح" placeholder="نقرات، مبيعات، تفاعل؟" />
         </div>
       </section>
 
-      {/* ثالثاً: الجمهور المستهدف */}
       <section>
         <SectionHeader num="٣" title="الجمهور المستهدف" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,36 +155,19 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* رابعاً: المنصات والمقاسات */}
       <section>
         <SectionHeader num="٤" title="المنصات والمقاسات" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>} />
         <div className="space-y-6">
-          <CheckboxGroup 
-            label="المنصات المستهدفة:" 
-            name="المنصات" 
-            options={["Instagram", "Facebook", "X", "TikTok", "LinkedIn", "Snapchat"]} 
-            columns={3}
-          />
-          <CheckboxGroup 
-            label="أنواع التصاميم المطلوبة:" 
-            name="نوع_التصميم" 
-            options={["بوست ثابت", "Carousel", "Story", "إعلان ممول", "ريلز"]} 
-            columns={3}
-          />
+          <CheckboxGroup label="المنصات المستهدفة:" name="المنصات" options={["Instagram", "Facebook", "X", "TikTok", "LinkedIn", "Snapchat"]} columns={3} />
+          <CheckboxGroup label="أنواع التصاميم المطلوبة:" name="نوع_التصميم" options={["بوست ثابت", "Carousel", "Story", "إعلان ممول", "ريلز"]} columns={3} />
           <InputField label="هل توجد مقاسات محددة مطلوبة؟" name="المقاسات" placeholder="مثال: 1080x1350" />
         </div>
       </section>
 
-      {/* خامساً: الأسلوب البصري */}
       <section>
         <SectionHeader num="٥" title="الأسلوب البصري" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>} />
         <div className="space-y-6">
-          <CheckboxGroup 
-            label="الأسلوب المطلوب:" 
-            name="الأسلوب" 
-            options={["عصري", "بسيط", "فخم", "مرح", "رسمي"]} 
-            columns={5}
-          />
+          <CheckboxGroup label="الأسلوب المطلوب:" name="الأسلوب" options={["عصري", "بسيط", "فخم", "مرح", "رسمي"]} columns={5} />
           <InputField label="ألوان مفضلة أو إلزامية" name="الألوان" placeholder="أكواد الألوان إن وجدت" />
           <InputField label="خطوط مفضلة" name="الخطوط" />
           <InputField label="تصاميم مرجعية (روابط)" name="روابط_مرجعية" placeholder="Behance, Pinterest..." />
@@ -188,7 +175,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* سادساً: المحتوى والنصوص */}
       <section>
         <SectionHeader num="٦" title="المحتوى والنصوص" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -199,7 +185,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* سابعاً: الجدول الزمني */}
       <section>
         <SectionHeader num="٧" title="الجدول الزمني" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -210,7 +195,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* ثامناً: ملاحظات قانونية وإدارية */}
       <section>
         <SectionHeader num="٨" title="ملاحظات قانونية وإدارية" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>} />
         <div className="space-y-6">
@@ -220,10 +204,9 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* تاسعاً: ملاحظات مهمة قبل البدء */}
       <section>
         <SectionHeader num="٩" title="ملاحظات مهمة قبل البدء" icon={<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>} />
-        <div className="p-6 bg-slate-900 text-white rounded-3xl space-y-4 text-sm font-medium leading-relaxed">
+        <div className="p-6 bg-slate-900 text-white rounded-3xl space-y-4 text-sm font-medium leading-relaxed text-right" dir="rtl">
           <p className="flex items-start gap-3">
             <span className="text-accent text-lg">●</span>
             تعتمد جودة التصاميم النهائية على دقة ووضوح هذا البريف.
@@ -236,14 +219,9 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
             <span className="text-accent text-lg">●</span>
             يُرجى جمع جميع الملاحظات في رد واحد لتسهيل وتسريع التنفيذ.
           </p>
-          <p className="flex items-start gap-3">
-            <span className="text-accent text-lg">●</span>
-            بعد اعتماد التصميم النهائي، أي تعديل لاحق يُعد طلباً جديداً.
-          </p>
         </div>
       </section>
 
-      {/* Submit Button */}
       <div className="pt-10 border-t border-slate-100 text-center">
         <button 
           type="submit" 
