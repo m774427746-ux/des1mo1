@@ -4,11 +4,13 @@ import React from 'react';
 interface HeaderProps {
   currentView: 'form' | 'about';
   setView: (view: 'form' | 'about') => void;
+  darkMode: boolean;
+  toggleDarkMode: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentView, setView }) => {
+const Header: React.FC<HeaderProps> = ({ currentView, setView, darkMode, toggleDarkMode }) => {
   return (
-    <header className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+    <header className="bg-white dark:bg-darkCard border-b border-slate-100 dark:border-slate-800 sticky top-0 z-50 shadow-sm transition-colors duration-300">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
@@ -25,25 +27,39 @@ const Header: React.FC<HeaderProps> = ({ currentView, setView }) => {
           </div>
         </div>
         
-        <nav className="flex items-center gap-2 md:gap-8">
+        <nav className="flex items-center gap-2 md:gap-4">
           <button 
             onClick={() => setView('form')}
-            className={`text-sm font-bold transition-all px-4 py-2 rounded-lg ${currentView === 'form' ? 'text-primary bg-primary/5' : 'text-slate-500 hover:text-primary'}`}
+            className={`text-sm font-bold transition-all px-3 py-2 rounded-lg ${currentView === 'form' ? 'text-primary bg-primary/5 dark:bg-primary/20' : 'text-slate-500 hover:text-primary dark:text-slate-400'}`}
           >
             طلب تصميم
           </button>
           <button 
             onClick={() => setView('about')}
-            className={`text-sm font-bold transition-all px-4 py-2 rounded-lg ${currentView === 'about' ? 'text-primary bg-primary/5' : 'text-slate-500 hover:text-primary'}`}
+            className={`text-sm font-bold transition-all px-3 py-2 rounded-lg ${currentView === 'about' ? 'text-primary bg-primary/5 dark:bg-primary/20' : 'text-slate-500 hover:text-primary dark:text-slate-400'}`}
           >
             نبذة عني
           </button>
-          <div className="hidden md:block h-6 w-[1px] bg-slate-200 mx-2"></div>
+
+          {/* Dark Mode Toggle */}
+          <button 
+            onClick={toggleDarkMode}
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-primary/10 hover:text-primary transition-all shadow-inner"
+            title={darkMode ? "تبديل للوضع الفاتح" : "تبديل للوضع المظلم"}
+          >
+            {darkMode ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            )}
+          </button>
+
+          <div className="hidden lg:block h-6 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2"></div>
           <a 
             href="https://www.behance.net/musabdes" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hidden md:flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition-all shadow-md"
+            className="hidden md:flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white text-xs font-bold rounded-lg hover:opacity-90 transition-all shadow-md"
           >
             <span>أعمالي</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

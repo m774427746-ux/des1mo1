@@ -8,7 +8,6 @@ interface BriefFormProps {
 const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
-  // تم تحديث المعرف بناءً على طلبك لضمان وصول الرسائل لإيميلك مباشرة
   const FORM_ID = "xbddnzzk"; 
   const FORMSPREE_ENDPOINT = `https://formspree.io/f/${FORM_ID}`;
 
@@ -38,46 +37,46 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   };
 
   const SectionHeader = ({ num, title, icon }: { num: string, title: string, icon: React.ReactNode }) => (
-    <div className="flex items-center gap-4 mb-8 mt-12 first:mt-0 p-5 bg-gradient-to-l from-slate-50 to-white rounded-2xl border-r-4 border-primary shadow-sm">
+    <div className="flex items-center gap-4 mb-8 mt-12 first:mt-0 p-5 bg-gradient-to-l from-slate-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl border-r-4 border-primary shadow-sm transition-colors">
       <div className="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xl shadow-lg">
         {num}
       </div>
       <div className="flex items-center gap-3">
         <span className="text-primary opacity-80">{icon}</span>
-        <h3 className="text-2xl font-black text-slate-800 font-heading tracking-tight">{title}</h3>
+        <h3 className="text-2xl font-black text-slate-800 dark:text-white font-heading tracking-tight">{title}</h3>
       </div>
     </div>
   );
 
   const InputField = ({ label, name, type = "text", placeholder, required = false }: any) => (
     <div className="space-y-2 group">
-      <label className="block text-sm font-bold text-slate-700 px-1 group-focus-within:text-primary transition-colors">
+      <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 px-1 group-focus-within:text-primary transition-colors">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input 
         type={type} name={name} placeholder={placeholder} required={required}
-        className="w-full px-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 font-medium shadow-sm"
+        className="w-full px-6 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 dark:text-white font-medium shadow-sm"
       />
     </div>
   );
 
   const TextAreaField = ({ label, name, placeholder, required = false }: any) => (
     <div className="space-y-2 group">
-      <label className="block text-sm font-bold text-slate-700 px-1 group-focus-within:text-primary transition-colors">
+      <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 px-1 group-focus-within:text-primary transition-colors">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <textarea 
         name={name} placeholder={placeholder} required={required} rows={3}
-        className="w-full px-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 font-medium resize-none shadow-sm"
+        className="w-full px-6 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 dark:text-white font-medium resize-none shadow-sm"
       />
     </div>
   );
 
   const SelectField = ({ label, name, options, required = false }: any) => (
     <div className="space-y-2 group">
-      <label className="block text-sm font-bold text-slate-700 px-1 group-focus-within:text-primary transition-colors">{label}</label>
+      <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 px-1 group-focus-within:text-primary transition-colors">{label}</label>
       <div className="relative">
-        <select name={name} required={required} className="w-full px-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 font-medium appearance-none shadow-sm cursor-pointer">
+        <select name={name} required={required} className="w-full px-6 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 dark:text-white font-medium appearance-none shadow-sm cursor-pointer">
           <option value="">اختر من القائمة...</option>
           {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
         </select>
@@ -90,12 +89,12 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
 
   const CheckboxGroup = ({ label, name, options, columns = 2 }: any) => (
     <div className="space-y-4">
-      <label className="block text-sm font-bold text-slate-700 px-1">{label}</label>
+      <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 px-1">{label}</label>
       <div className={`grid grid-cols-1 sm:grid-cols-${columns} gap-3`}>
         {options.map((opt: string) => (
-          <label key={opt} className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 cursor-pointer hover:border-primary/30 hover:bg-primary/5 transition-all group shadow-sm">
-            <input type="checkbox" name={name} value={opt} className="w-5 h-5 rounded border-slate-300 text-primary cursor-pointer" />
-            <span className="text-sm font-bold text-slate-600 group-hover:text-primary transition-colors">{opt}</span>
+          <label key={opt} className="flex items-center gap-3 p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl cursor-pointer hover:border-primary/30 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all group shadow-sm">
+            <input type="checkbox" name={name} value={opt} className="w-5 h-5 rounded border-slate-300 dark:border-slate-600 text-primary cursor-pointer" />
+            <span className="text-sm font-bold text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">{opt}</span>
           </label>
         ))}
       </div>
@@ -103,8 +102,7 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="p-8 md:p-16 space-y-16 bg-white">
-      {/* 1. العلامة التجارية */}
+    <form onSubmit={handleSubmit} className="p-8 md:p-16 space-y-16 bg-white dark:bg-darkCard transition-colors">
       <section className="animate__animated animate__fadeIn">
         <SectionHeader num="١" title="معلومات العلامة التجارية" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -118,7 +116,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 2. أهداف التصاميم */}
       <section>
         <SectionHeader num="٢" title="أهداف التصاميم" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>} />
         <div className="space-y-8">
@@ -128,7 +125,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 3. الجمهور المستهدف */}
       <section>
         <SectionHeader num="٣" title="الجمهور المستهدف" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -139,7 +135,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 4. المنصات والمقاسات */}
       <section>
         <SectionHeader num="٤" title="المنصات والمقاسات" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>} />
         <div className="space-y-8">
@@ -149,7 +144,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 5. الأسلوب البصري */}
       <section>
         <SectionHeader num="٥" title="الأسلوب البصري" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>} />
         <div className="space-y-8">
@@ -160,7 +154,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 6. المحتوى والنصوص */}
       <section>
         <SectionHeader num="٦" title="المحتوى والنصوص" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -171,7 +164,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 7. الجدول الزمني */}
       <section>
         <SectionHeader num="٧" title="الجدول الزمني والتسليم" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -182,7 +174,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      {/* 8. أمور قانونية */}
       <section>
         <SectionHeader num="٨" title="أمور قانونية وإدارية" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>} />
         <div className="space-y-8">
@@ -192,7 +183,7 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         </div>
       </section>
 
-      <div className="pt-16 border-t border-slate-100 text-center">
+      <div className="pt-16 border-t border-slate-100 dark:border-slate-800 text-center">
         <button 
           type="submit" 
           disabled={loading}
