@@ -9,12 +9,13 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
   /**
-   * ملاحظة هامة لمصعب:
-   * رابط Formspree يجب أن يحتوي على معرف (ID) وليس إيميل مباشرة.
-   * مثال: https://formspree.io/f/mqakjzoy
-   * إذا وضعت الإيميل مباشرة، قد ترفض الخدمة الإرسال.
+   * الخطوة الأخيرة لمصعب:
+   * 1. اذهب لموقع Formspree.io
+   * 2. أنشئ نموذج جديد واحصل على الـ ID الخاص به (مثال: mqakjzoy)
+   * 3. استبدل النص "mqakjzoy" أدناه بالكود الخاص بك.
    */
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mqakjzoy"; // استبدل mqakjzoy بالـ ID الخاص بك من موقع formspree.io
+  const FORM_ID = "mqakjzoy"; // ضع هنا الكود الذي حصلت عليه من Formspree
+  const FORMSPREE_ENDPOINT = `https://formspree.io/f/${FORM_ID}`;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +24,6 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
     const formData = new FormData(e.currentTarget);
     
     try {
-      // التأكد من أننا نرسل الطلب بشكل صحيح
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         body: formData,
@@ -36,12 +36,12 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
         onSuccess();
       } else {
         const errorData = await response.json();
-        console.error("Formspree error:", errorData);
-        alert("تنبيه: يرجى التأكد من تفعيل الرابط الخاص بك في Formspree. (تأكد من استخدام الـ ID وليس الإيميل في الكود)");
+        console.error("Formspree error details:", errorData);
+        alert("حدث خطأ في الإرسال. تأكد من أنك قمت بتفعيل الـ Form ID الصحيح في الكود.");
       }
     } catch (error) {
-      console.error("Submission error:", error);
-      alert("حدث خطأ أثناء الاتصال بالخادم. يرجى المحاولة مرة أخرى.");
+      console.error("Submission network error:", error);
+      alert("تعذر الاتصال بالخادم. تأكد من اتصال الإنترنت وحاول مجدداً.");
     } finally {
       setLoading(false);
     }
