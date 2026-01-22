@@ -8,8 +8,8 @@ interface BriefFormProps {
 const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
-  // ملاحظة لمصعب: استبدل "mqakjzoy" بالكود الذي ستحصل عليه من Formspree.io
-  const FORM_ID = "mqakjzoy"; 
+  // تم تحديث المعرف بناءً على طلبك لضمان وصول الرسائل لإيميلك مباشرة
+  const FORM_ID = "xbddnzzk"; 
   const FORMSPREE_ENDPOINT = `https://formspree.io/f/${FORM_ID}`;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,10 +28,10 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
       if (response.ok) {
         onSuccess();
       } else {
-        alert("يرجى التأكد من ضبط Form ID الصحيح في الكود لاستلام البيانات.");
+        alert("تنبيه: يبدو أن هناك مشكلة في إعدادات الإرسال. يرجى التواصل مع الدعم الفني.");
       }
     } catch (error) {
-      alert("حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.");
+      alert("حدث خطأ في الاتصال، يرجى التأكد من توفر الإنترنت والمحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -76,10 +76,15 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   const SelectField = ({ label, name, options, required = false }: any) => (
     <div className="space-y-2 group">
       <label className="block text-sm font-bold text-slate-700 px-1 group-focus-within:text-primary transition-colors">{label}</label>
-      <select name={name} required={required} className="w-full px-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 font-medium appearance-none shadow-sm">
-        <option value="">اختر من القائمة...</option>
-        {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
-      </select>
+      <div className="relative">
+        <select name={name} required={required} className="w-full px-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary transition-all outline-none text-slate-800 font-medium appearance-none shadow-sm cursor-pointer">
+          <option value="">اختر من القائمة...</option>
+          {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+        </select>
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
     </div>
   );
 
@@ -89,8 +94,8 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
       <div className={`grid grid-cols-1 sm:grid-cols-${columns} gap-3`}>
         {options.map((opt: string) => (
           <label key={opt} className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 cursor-pointer hover:border-primary/30 hover:bg-primary/5 transition-all group shadow-sm">
-            <input type="checkbox" name={name} value={opt} className="w-5 h-5 rounded border-slate-300 text-primary" />
-            <span className="text-sm font-bold text-slate-600 group-hover:text-primary">{opt}</span>
+            <input type="checkbox" name={name} value={opt} className="w-5 h-5 rounded border-slate-300 text-primary cursor-pointer" />
+            <span className="text-sm font-bold text-slate-600 group-hover:text-primary transition-colors">{opt}</span>
           </label>
         ))}
       </div>
@@ -100,7 +105,7 @@ const BriefForm: React.FC<BriefFormProps> = ({ onSuccess }) => {
   return (
     <form onSubmit={handleSubmit} className="p-8 md:p-16 space-y-16 bg-white">
       {/* 1. العلامة التجارية */}
-      <section>
+      <section className="animate__animated animate__fadeIn">
         <SectionHeader num="١" title="معلومات العلامة التجارية" icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <InputField label="اسم العلامة التجارية الرسمي" name="اسم_العلامة" placeholder="مثال: شركة الدرة الوطنية" required />
